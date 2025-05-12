@@ -12,7 +12,6 @@ const int rows = 4;
 const int cols = 4;
 const int totalCards = rows * cols / 2;
 
-// Card class to represent each card
 class Card {
 public:
     sf::RectangleShape shape;
@@ -22,7 +21,7 @@ public:
 
     Card(int x, int y, int id) : id(id) {
         shape.setSize(sf::Vector2f(cardSize, cardSize));
-        shape.setPosition(x, y);
+        shape.setPosition(sf::Vector2f(x, y));
         shape.setFillColor(sf::Color::Blue);
     }
 
@@ -43,7 +42,7 @@ public:
 };
 
 int main() {
-    sf::Window window(sf::VideoMode(windowWidth, windowHeight), "Memory Game", sf::Style::Default);
+    sf::RenderWindow window(sf::VideoMode(sf::Vector2u(windowWidth, windowHeight)), "Memory Game");
     std::vector<Card> cards;
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
@@ -65,10 +64,10 @@ int main() {
     }
 
     while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+        if (auto event = window.pollEvent()) {
+            if (event->is<sf::Event::Closed>()) {
                 window.close();
+            }
         }
 
         window.clear(sf::Color::White);
