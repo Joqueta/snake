@@ -6,30 +6,50 @@ CXXFLAGS = -Wall -Wextra -std=c++17 -I/opt/homebrew/Cellar/sfml/3.0.0_1/include
 LDFLAGS = -L/opt/homebrew/Cellar/sfml/3.0.0_1/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 # Répertoires
-SRC_DIR = src
-INC_DIR = include
-OBJ_DIR = obj
+.PHONY = all, clean, fclean, re
 
-# Fichiers sources
-SRCS = $(wildcard $(SRC_DIR)/*.cpp)
+ifeq ($(OS),Windows_NT)
+    NAME = Snake.exe
+	CC	 = g++
+    LIB_PATH = -L./lib/windows \
+        -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio \
+        -lopengl32 -lwinmm -lgdi32
+else
+    NAME = Snake
+	CC	 = clang++
+    LIB_PATH = -L./lib/macos -lFLAC 						\
+		-lsfml-graphics -lvorbis 					\
+		-lfreetype -lsfml-network 					\
+		-lvorbisenc -logg -lsfml-system 			\
+		-lvorbisfile -lsfml-audio -lsfml-window 	\
+		-framework OpenGL -framework AppKit 		\
+		-framework IOKit -framework CoreServices 	\
+		-framework Carbon -framework OpenAL
 
-# Fichiers objets
-OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+endif
 
-# Nom du programme
-TARGET = Snake
+CFLAGS = -Wall -Wextra -Werror -std=c++17
 
-# Règles
-all: $(TARGET)
+INC = -I./include
 
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+SRC	=	src/main.cpp			
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+OBJ = $(SRC:.cpp=.o)
+
+all: $(NAME)
+
+$(NAME): $(OBJ)
+		$(CC) -o $(NAME) $(OBJ) $(LIB_PATH) $(CFLAGS) $(INC)
+
+%.o: %.cpp
+	$(CC) -o $@ -c $< $(INC) $(CFLAGS)
 
 clean:
-	rm -rf $(OBJ_DIR) $(TARGET)
+		rm -rf $(OBJ)
 
-.PHONY: all clean
+fclean: clean
+		rm -rf $(NAME)
+
+re: fclean all
+
+.PHONY: all clean re fclean
