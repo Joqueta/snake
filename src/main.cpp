@@ -4,6 +4,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <optional>
+#include <iostream>
 
 const int windowSize = 800;
 const int gridSize = 20;
@@ -67,18 +68,26 @@ int main() {
     while (window.isOpen()) {
         if (auto event = window.pollEvent()) {
             if (event->is<sf::Event::Closed>()) {
-                window.close();
+            
             }
             else if (event-> is<sf::Event::KeyPressed>()) {
                 const auto* keyEvent = event->getIf<sf::Event::KeyPressed>();
-                if (keyEvent->code == sf::Keyboard::Key::Escape) {
-                    if (keyEvent->code == sf::Keyboard::Key::Up) snake.setDirection(0, -1);
-                    if (keyEvent->code == sf::Keyboard::Key::Down) snake.setDirection(0, 1);
-                    if (keyEvent->code == sf::Keyboard::Key::Left) snake.setDirection(-1, 0);
-                    if (keyEvent->code == sf::Keyboard::Key::Right) snake.setDirection(1, 0);
+               // if (keyEvent->code == sf::Keyboard::Key::Escape);
+                if (keyEvent->code == sf::Keyboard::Key::Up) {
+                    snake.setDirection(0, -1); 
+                    }
+                if (keyEvent->code == sf::Keyboard::Key::Down) {
+                    snake.setDirection(0, 1); 
+                    } 
+                if (keyEvent->code == sf::Keyboard::Key::Left) {
+
+                    snake.setDirection(-1, 0); }
+                
+                if (keyEvent->code == sf::Keyboard::Key::Right) {
+                    snake.setDirection(1, 0); }
                             
             }
-        }
+        
         }
 
         snake.move();
