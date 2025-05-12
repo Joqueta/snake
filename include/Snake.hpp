@@ -4,6 +4,8 @@
 #include <random>
 #include <ctime>
 #include <iostream>
+#include <vector>
+
 
 const int windowWidth = 800;
 const int windowHeight = 600;
@@ -11,6 +13,21 @@ const int cardSize = 100;
 const int rows = 4;
 const int cols = 4;
 const int totalCards = rows * cols / 2;
+
+class Snake {
+public:
+    Snake(int squareSize);
+    void move();
+    void grow();
+    void setDirection(int dx, int dy);
+    void draw(sf::RenderWindow& window);
+    sf::Vector2f getHeadPosition() const;
+
+private:
+    std::vector<sf::RectangleShape> body;
+    int squareSize;
+    int dx, dy;
+};
 
 class Card {
 public:
