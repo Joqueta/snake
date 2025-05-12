@@ -7,7 +7,7 @@
 
 const int windowSize = 800;
 const int gridSize = 20;
-const int snakeSpeed = 10;
+
 
 struct SnakeSegment {
     int x, y;
