@@ -1,11 +1,15 @@
-# Le compilateur
-CXX = g++
+#******************************************************************************#
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mmoumini <mmoumini@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2015/05/12 13:41:19 by mmoumini          #+#    #+#              #
+#    Updated: 2025/04/27 17:46:43 by mmoumini         ###   ########.fr        #
+#                                                                              #
+#******************************************************************************#
 
-# Les options de compilation pour SFML 3.0.0 sur macOS via Homebrew
-CXXFLAGS = -Wall -Wextra -std=c++17 -I/opt/homebrew/Cellar/sfml/3.0.0_1/include
-LDFLAGS = -L/opt/homebrew/Cellar/sfml/3.0.0_1/lib -lsfml-graphics -lsfml-window -lsfml-system
-
-# Répertoires
 .PHONY = all, clean, fclean, re
 
 ifeq ($(OS),Windows_NT)
