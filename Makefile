@@ -1,36 +1,59 @@
-# Variables de compilation
-CXX = clang++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++17 -I./include
-LDFLAGS = -L./lib/macos -lFLAC -lsfml-graphics -lvorbis -lfreetype -lsfml-network -lvorbisenc -logg -lsfml-system -lvorbisfile -lsfml-audio -lsfml-window -framework OpenGL -framework AppKit -framework IOKit -framework CoreServices -framework Carbon -framework OpenAL
+#******************************************************************************#
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mmoumini <mmoumini@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2015/05/12 13:41:19 by mmoumini          #+#    #+#              #
+#    Updated: 2025/04/27 17:46:43 by mmoumini         ###   ########.fr        #
+#                                                                              #
+#******************************************************************************#
 
-# Répertoires
-SRC_DIR = src
-OBJ_DIR = obj
-INCLUDE_DIR = include
+.PHONY = all, clean, fclean, re
 
-# Fichiers sources et objets
-SRCS = $(wildcard $(SRC_DIR)/*.cpp)
-OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
+ifeq ($(OS),Windows_NT)
+    NAME = Snake.exe
+	CC	 = g++
+    LIB_PATH = -L./lib/windows \
+        -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio \
+        -lopengl32 -lwinmm -lgdi32
+else
+    NAME = Snake
+	CC	 = clang++
+    LIB_PATH = -L./lib/macos -lFLAC 						\
+		-lsfml-graphics -lvorbis 					\
+		-lfreetype -lsfml-network 					\
+		-lvorbisenc -logg -lsfml-system 			\
+		-lvorbisfile -lsfml-audio -lsfml-window 	\
+		-framework OpenGL -framework AppKit 		\
+		-framework IOKit -framework CoreServices 	\
+		-framework Carbon -framework OpenAL
 
-# Nom de l'exécutable
-TARGET = Snake
+endif
 
-# Règle par défaut
-all: $(TARGET)
+CFLAGS = -Wall -Wextra -Werror -std=c++17
 
-# Règle pour l'exécutable
-$(TARGET): $(OBJS)
-	$(CXX) -o $@ $^ $(LDFLAGS)
+INC = -I./include
 
-# Règle générique pour la compilation des fichiers objets
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+SRC	=	src/main.cpp			
 
-# Nettoyage des objets et de l'exécutable
+OBJ = $(SRC:.cpp=.o)
+
+all: $(NAME)
+
+$(NAME): $(OBJ)
+		$(CC) -o $(NAME) $(OBJ) $(LIB_PATH) $(CFLAGS) $(INC)
+
+%.o: %.cpp
+	$(CC) -o $@ -c $< $(INC) $(CFLAGS)
+
 clean:
-	rm -rf $(OBJ_DIR) $(TARGET)
+		rm -rf $(OBJ)
 
-# Nettoyage complet
-distclean: clean
-	rm -f $(TARGET)
+fclean: clean
+		rm -rf $(NAME)
+
+re: fclean all
+
+.PHONY: all clean re fclean
