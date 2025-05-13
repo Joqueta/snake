@@ -6,6 +6,19 @@
 #include "Snake.hpp"
 #include "Food.hpp"
 
+// Vérifie si la tête du serpent est sur la nourriture
+bool isCollisionWithFood(sf::Vector2f headPos, sf::Vector2f foodPos) {
+    return (headPos == foodPos);  // Vérifie si les positions sont identiques
+}
+
+
+
+// Vérifie si la tête du serpent touche un mur
+bool isCollisionWithWall(sf::Vector2f headPos, int windowSize) {
+    return (headPos.x < 0 || headPos.x >= windowSize || headPos.y < 0 || headPos.y >= windowSize);
+    std::cout << "Vous avez heurté le mur";
+}
+
 const int windowSize = 800;
 const int gridSize = 20;
 
@@ -40,20 +53,26 @@ int main() {
             }
         }
 
+
         // Déplacer le serpent
         snake.move();
 
-        // Vérifier si le serpent a mangé la nourriture
-        if (snake.getHeadPosition() == food.getPosition()) {
+       if (isCollisionWithFood(snake.getHeadPosition(), food.getPosition())) {
             snake.grow();
             food.spawn();
-        }
+            std::cout << "Nourriture mangée!" << std::endl;
 
-        // Vérifier la collision avec les murs ou le corps du serpent
-        if (snake.checkCollision(windowSize)) {
+}
+
+        // Vérifier les collisions avec les murs ou le corps
+        if (isCollisionWithWall(snake.getHeadPosition(), windowSize) || snake.checkCollisionWithBody()) {
             std::cout << "Game Over!" << std::endl;
             window.close();
-        }
+
+
+}
+
+
 
         // Rendu graphique
         window.clear(sf::Color::Black);

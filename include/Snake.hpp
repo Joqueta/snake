@@ -1,4 +1,7 @@
-#pragma once
+// Snake.hpp
+#ifndef SNAKE_HPP
+#define SNAKE_HPP
+
 #include <SFML/Graphics.hpp>
 #include <deque>
 
@@ -12,12 +15,17 @@ public:
     void move();
     void grow();
     void setDirection(int dx, int dy);
-    bool checkCollision(int windowSize);
     void draw(sf::RenderWindow& window);
     sf::Vector2f getHeadPosition() const;
 
+    // Vérifications des collisions
+    bool checkCollisionWithBody() const;
+    bool checkCollisionWithWall(int windowSize) const;
+
 private:
-    int squareSize;                    // Déclaré en premier
-    SnakeSegment direction;            // Déclaré en second
-    std::deque<SnakeSegment> segments; // Déclaré en troisième
+    int squareSize;
+    sf::Vector2i direction;
+    std::deque<SnakeSegment> segments;
 };
+
+#endif
