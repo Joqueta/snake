@@ -38,7 +38,7 @@ INC = -I./include
 
 SRC	=	src/main.cpp \
 		src/food.cpp \
-		src/snake.cpp		
+		src/Snake.cpp		
 
 OBJ = $(SRC:.cpp=.o)
 

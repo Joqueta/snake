@@ -17,32 +17,32 @@ int main() {
     // Initialisation du serpent et de la nourriture
     Snake snake(gridSize);
     Food food(gridSize, windowSize);
-
-    // Boucle principale du jeu
     while (window.isOpen()) {
-        // Gestion des événements
-        if (auto event = window.pollEvent()) {
-            if (event->is<sf::Event::Closed>()) {
+
+ //  sf::Event event;
+while (auto optEvent = window.pollEvent()) {
+const sf::Event& event = *optEvent;
+
+    std::cout << "Event" << std::endl;
+    if (event.is<sf::Event::Closed>()) {
+        window.close();
+    } else if (event.is<sf::Event::KeyPressed>()) {
+        const auto* keyEvent = event.getIf<sf::Event::KeyPressed>();
+        if (keyEvent) {
+            std::cout << "Touche appuyée" << std::endl;
+            if (keyEvent->code == sf::Keyboard::Key::Escape) {
                 window.close();
-            } else if (event->is<sf::Event::KeyPressed>()) {
-                const auto* keyEvent = event->getIf<sf::Event::KeyPressed>();
-                if (keyEvent->code == sf::Keyboard::Key::Escape) {
-                    window.close();
-                } else if (keyEvent->code == sf::Keyboard::Key::Up) {
-                    snake.setDirection(0, -1);
-                } else if (keyEvent->code == sf::Keyboard::Key::Down) {
-                    snake.setDirection(0, 1);
-                } else if (keyEvent->code == sf::Keyboard::Key::Left) {
-                    snake.setDirection(-1, 0);
-                } else if (keyEvent->code == sf::Keyboard::Key::Right) {
-                    snake.setDirection(1, 0);
-                }
+            } else if (keyEvent->code == sf::Keyboard::Key::Up) {
+                snake.setDirection(0, -1);
+            } else if (keyEvent->code == sf::Keyboard::Key::Down) {
+                snake.setDirection(0, 1);
+            } else if (keyEvent->code == sf::Keyboard::Key::Left) {
+                snake.setDirection(-1, 0);
+            } else if (keyEvent->code == sf::Keyboard::Key::Right) {
+                snake.setDirection(1, 0);
             }
         }
-
-        // Déplacer le serpent
-        snake.move();
-
+}
         // Vérifier si le serpent a mangé la nourriture
         if (snake.getHeadPosition() == food.getPosition()) {
             snake.grow();
@@ -64,6 +64,6 @@ int main() {
         // Contrôle de la vitesse du serpent
         sf::sleep(sf::milliseconds(100));
     }
-
+    }
     return 0;
 }
