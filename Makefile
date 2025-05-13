@@ -36,7 +36,9 @@ CFLAGS = -Wall -Wextra -Werror -std=c++17
 
 INC = -I./include
 
-SRC	=	src/main.cpp			
+SRC	=	src/main.cpp \
+		src/food.cpp \
+		src/snake.cpp		
 
 OBJ = $(SRC:.cpp=.o)
 
