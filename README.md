@@ -11,7 +11,7 @@ brew install sfml
 
 ⚙️ Compilation: Compilez le jeu avec la commande suivante:
 
-g++ main.cpp -o snake -std=c++17 -I/opt/homebrew/include -L/opt/homebrew/lib -lsfml-graphics -lsfml-window -lsfml-system
+g++ main.cpp -o snake -std=c++17 -I/opt/homebrew/include -L/opt/homebrew/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 ▶️ Exécution: Une fois la compilation terminée, lancez le jeu avec:
 
