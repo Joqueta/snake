@@ -60,7 +60,6 @@ restart:
         float(WINDOW_WIDTH) / diffBgTexture.getSize().x,
         float(WINDOW_HEIGHT) / diffBgTexture.getSize().y
     ));
-    // ----------------------
 
     sf::Color bgColor = sf::Color(30, 30, 30);
     sf::Color snakeColor = sf::Color(60, 200, 70);
@@ -78,7 +77,6 @@ restart:
     const std::string HIGHSCORE_FILE = "highscore.txt";
     int highscore = loadHighscore(HIGHSCORE_FILE);
 
-    // ----------- SONS & MUSIQUE -----------
     sf::Music backgroundMusic;
     sf::SoundBuffer eatBuffer, gameoverBuffer;
 
@@ -95,7 +93,6 @@ restart:
     sf::Sound eatSound(eatBuffer);
     sf::Sound gameoverSound(gameoverBuffer);
 
-    // --------- SLIDER VOLUME MENU ---------
     float musicVolume = 100.f;
     sf::RectangleShape sliderBar(sf::Vector2f(200, 8));
     sliderBar.setFillColor(sf::Color(180, 180, 180));
@@ -117,7 +114,6 @@ restart:
     backgroundMusic.setVolume(musicVolume);
     backgroundMusic.play();
 
-    // Menu principal
     bool startGame = false;
     bool quitGame = false;
 
@@ -145,7 +141,6 @@ restart:
     highscoreTextMenu.setFillColor(sf::Color::Cyan);
     highscoreTextMenu.setPosition(sf::Vector2f(WINDOW_WIDTH/2.f - 100.f, 145.f));
 
-    // Menu principal loop
     while (window.isOpen() && !startGame && !quitGame) {
         sf::Vector2i mouse = sf::Mouse::getPosition(window);
 
@@ -159,8 +154,7 @@ restart:
         } else {
             quitButton.setFillColor(sf::Color(180, 100, 100));
         }
-
-        //  SLIDER VOLUME 
+ 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !draggingSlider) {
             if (sliderKnob.getGlobalBounds().contains(sf::Vector2f(mouse))) {
                 draggingSlider = true;
@@ -208,9 +202,8 @@ restart:
     if (quitGame) return 0;
     if (!startGame) goto restart;
 
-    // === ECRAN CHOIX DIFFICULTE ===
     bool choixDiff = true;
-    float snakeSpeed = 0.1f; // sera choisi
+    float snakeSpeed = 0.1f;
     float buttonWidth = 280;
 
     sf::RectangleShape facileButton(sf::Vector2f(buttonWidth, 60));
@@ -251,7 +244,6 @@ restart:
     while (window.isOpen() && choixDiff) {
         sf::Vector2i mouse = sf::Mouse::getPosition(window);
 
-        // Hover
         facileButton.setFillColor(facileButton.getGlobalBounds().contains(sf::Vector2f(mouse)) ? sf::Color(120,200,255) : sf::Color(100,180,255));
         moyenButton.setFillColor(moyenButton.getGlobalBounds().contains(sf::Vector2f(mouse)) ? sf::Color(255,220,120) : sf::Color(255,200,80));
         diffButton.setFillColor(diffButton.getGlobalBounds().contains(sf::Vector2f(mouse)) ? sf::Color(255,120,120) : sf::Color(255,80,80));
@@ -283,7 +275,6 @@ restart:
     }
     if (choixDiff) goto restart;
 
-    // DEBUT DU JEU le vrai du vrai
 
     std::deque<sf::Vector2i> snake = { {GRID_WIDTH/2, GRID_HEIGHT/2} };
     Direction dir = Direction::Right;
@@ -398,13 +389,11 @@ restart:
             if (!gameOver) justLost = false;
         }
 
-        // Boucle manuelle de la musique
         if (!gameOver && backgroundMusic.getStatus() == sf::SoundSource::Status::Stopped) {
             backgroundMusic.setVolume(musicVolume);
             backgroundMusic.play();
         }
-
-        // ==== FOND JEU ====
+        
         window.clear();
         if (gameBgLoaded) window.draw(gameBg);
 
@@ -415,10 +404,8 @@ restart:
         appleCircle.setPosition(sf::Vector2f(apple.x * CELL_SIZE + CELL_SIZE/2.f, apple.y * CELL_SIZE + CELL_SIZE/2.f));
         window.draw(appleCircle);
 
-        //  DESSIN SERPENT STYLE ROND + TETE DISTINCTE AVEC YEUX + LANGUE 
         for (size_t i = 0; i < snake.size(); ++i) {
             if (i == 0) {
-                // Tête
                 float headRadius = CELL_SIZE * 0.6f;
                 sf::CircleShape head(headRadius);
                 head.setFillColor(snakeHeadColor);
@@ -426,12 +413,10 @@ restart:
                 head.setPosition(sf::Vector2f(snake[i].x * CELL_SIZE + CELL_SIZE/2.f, snake[i].y * CELL_SIZE + CELL_SIZE/2.f));
                 window.draw(head);
 
-                // Dessin des yeux
                 sf::CircleShape eye(CELL_SIZE * 0.13f);
                 eye.setFillColor(sf::Color::Black);
 
                 sf::Vector2f headPos = head.getPosition();
-                // Placement des yeux selon la direction du serpent
                 if (dir == Direction::Up) {
                     eye.setPosition(sf::Vector2f(headPos.x - CELL_SIZE*0.22f, headPos.y - CELL_SIZE*0.25f));
                     window.draw(eye);
@@ -453,7 +438,6 @@ restart:
                     eye.setPosition(sf::Vector2f(headPos.x + CELL_SIZE*0.13f, headPos.y + CELL_SIZE*0.13f));
                     window.draw(eye);
                 }
-                // Langue
                 sf::RectangleShape tongue(sf::Vector2f(CELL_SIZE * 0.18f, CELL_SIZE * 0.06f));
                 tongue.setFillColor(sf::Color(230, 20, 60));
                 tongue.setOrigin(sf::Vector2f(0, tongue.getSize().y / 2.f));
